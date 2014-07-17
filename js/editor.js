@@ -70,8 +70,7 @@ function render() {
             for(var x=9; x >= 0; x--) {
                 if(model[z][x][9-y]) {
                     var point = new Point(x, y, z);
-                    var color = (z == currentLayer ? new Color(200, 200, 200) : new Color(200, 200, 200, 0.5))
-                    iso.add(Shape.Prism(point, 1, 1, 1), new Color(200, 200, 200));
+                    iso.add(Shape.Prism(point, 1, 1, 1), new Color(0, 180, 0));
                 }
             }
         }
