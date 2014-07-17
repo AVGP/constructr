@@ -65,7 +65,7 @@ function setupControl(tilesPerRow, tilesPerCol) {
 function render() {
     canvas.clear();
     iso.add(Shape.Prism(Point.ORIGIN, COLS, ROWS, LEVELS), new Color(200, 200, 200, 0.1))
-    for(var z=0; z < LEVELS-1; z++) {
+    for(var z=0; z < LEVELS; z++) {
         if(z == currentLayer) {
             drawGrid(COLS, ROWS);
         }
