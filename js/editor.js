@@ -12,7 +12,7 @@ var ROWS   = 10,
     COLS   = 10,
     LEVELS = 10;
 
-var model = [], currentLayer = 0;
+var model = [], controls = [], currentLayer = 0;
 
 function initModel(rows, cols, levels) {
     for(var lvl=0; lvl < levels; lvl++) {
@@ -42,12 +42,13 @@ function setupControl(tilesPerRow, tilesPerCol) {
     var controlContainer = document.getElementById("control");
     for(var y=0; y < tilesPerRow; y++) {
         var rowControl = document.createElement("div");
+        var controlsInRow = [];
         for(var x=0; x < tilesPerCol; x++) {
             (function(tx, ty, row) {
                 var controlTile = document.createElement("div");
+                controlsInRow.push(controlTile);
                 controlTile.className = "controlTile";
                 controlTile.addEventListener("click", function() {
-                    console.log("Tile " + tx + ", " + ty);
                     model[currentLayer][tx][ty] = !model[currentLayer][tx][ty];
                     if(model[currentLayer][tx][ty]) {
                         this.classList.add("set"); 
@@ -58,6 +59,7 @@ function setupControl(tilesPerRow, tilesPerCol) {
                 row.appendChild(controlTile);
             })(x, y, rowControl);
         }
+        controls.push(controlsInRow);
         controlContainer.appendChild(rowControl);
     }
 }
@@ -83,6 +85,16 @@ function render() {
     requestAnimationFrame(render);
 }
 
+function updateControls(level) {
+    for(var y=0;y < COLS; y++) {
+        for(var x=0; x < ROWS; x++) {
+            if(model[level][x][y]) {
+                controls[level];
+            }
+        }
+    }
+}
+
 setupControl(ROWS, COLS);
 initModel(ROWS, COLS, LEVELS);
 render();
@@ -93,6 +105,8 @@ function getLayerChangeHandler(moveBy) {
 
         if(currentLayer < 0) currentLayer = 0;
         else if(currentLayer >= LEVELS) currentLayer = LEVELS-1;
+
+//        updateControls();
 
         e.stopPropagation();
         return false;
