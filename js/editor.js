@@ -58,8 +58,7 @@ function setupControl(tilesPerRow, tilesPerCol) {
                     }
                     
                     window.location.hash = saveModel2String();
-                    link.textContent     = window.location.hash;
-                    link.href            = link.textContent;
+                    link.href            = window.location.href;
                 }, false);
                 row.appendChild(controlTile);
             })(x, y, rowControl);
