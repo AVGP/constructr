@@ -124,6 +124,17 @@ function loadString2Model(serializedModel) {
     }
 }
 
+function clear() {
+    window.location.hash = "";
+    for(var lvl=0; lvl < LEVELS; lvl++) {
+        for(var y=0;y < COLS; y++) {
+            for(var x=0; x < ROWS; x++) {
+                Model[lvl][x][y] = false;
+            }
+        }
+    }
+}
+
 setupControl(ROWS, COLS);
 initModel(ROWS, COLS, LEVELS);
 if(window.location.hash) {
@@ -148,3 +159,10 @@ function getLayerChangeHandler(moveBy) {
 
 document.getElementById("layerUp"  ).addEventListener("click", getLayerChangeHandler( 1), false);
 document.getElementById("layerDown").addEventListener("click", getLayerChangeHandler(-1), false);
+
+document.getElementById("clear").addEventListener("click", function() {
+    if(window.confirm("Really clear the workspace?")) {
+        clear();
+        updateControls(CurrentLayer);
+    }
+});
