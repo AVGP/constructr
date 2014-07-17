@@ -8,6 +8,10 @@ var editor   = document.getElementById("editor"),
     iso      = new Isomer(editor),
     canvas   = new Canvas(editor);
 
+var ROWS   = 10,
+    COLS   = 10,
+    LEVELS = 10;
+
 var model = [], currentLayer = 0;
 
 function initModel(rows, cols, levels) {
@@ -60,15 +64,15 @@ function setupControl(tilesPerRow, tilesPerCol) {
 
 function render() {
     canvas.clear();
-    iso.add(Shape.Prism(Point.ORIGIN, 10, 10, 10), new Color(200, 200, 200, 0.1))
-    for(var z=0; z < 9; z++) {
+    iso.add(Shape.Prism(Point.ORIGIN, COLS, ROWS, LEVELS), new Color(200, 200, 200, 0.1))
+    for(var z=0; z < LEVELS-1; z++) {
         if(z == currentLayer) {
-            drawGrid(10, 10);
+            drawGrid(COLS, ROWS);
         }
 
-        for(var y=9;y >= 0; y--) {
-            for(var x=9; x >= 0; x--) {
-                if(model[z][x][9-y]) {
+        for(var y=ROWS-1;y >= 0; y--) {
+            for(var x=COLS-1; x >= 0; x--) {
+                if(model[z][x][COLS-1-y]) {
                     var point = new Point(x, y, z);
                     iso.add(Shape.Prism(point, 1, 1, 1), new Color(0, 180, 0));
                 }
@@ -79,18 +83,21 @@ function render() {
     requestAnimationFrame(render);
 }
 
-setupControl(10, 10);
-initModel(10,10,10);
+setupControl(ROWS, COLS);
+initModel(ROWS, COLS, LEVELS);
 render();
 
-document.getElementById("layerUp").addEventListener("click", function() {
-    if(currentLayer < 9) {
-        currentLayer++;
-    }
-});
+function getLayerChangeHandler(moveBy) {
+    return function(e) {
+        currentLayer += moveBy;
 
-document.getElementById("layerDown").addEventListener("click", function() {
-    if(currentLayer > 0) {
-        currentLayer--;
+        if(currentLayer < 0) currentLayer = 0;
+        else if(currentLayer >= LEVELS) currentLayer = LEVELS-1;
+
+        e.stopPropagation();
+        return false;
     }
-});
+}
+
+document.getElementById("layerUp"  ).addEventListener("click", getLayerChangeHandler( 1), false);
+document.getElementById("layerDown").addEventListener("click", getLayerChangeHandler(-1), false);
