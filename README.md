@@ -1,7 +1,8 @@
 # Constructr
 
 Simple, [isomer.js](https://github.com/jdan/isomer)-based 3D model editor in the browser.
-Works with touch and on mobile, too.
+Primarily built for mobile devices (in landscape mode).
+
 
 ## Browser support
 It should work in all major browsers (except Opera, as far as I can tell right now).
